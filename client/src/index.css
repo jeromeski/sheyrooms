@@ -1,0 +1,13 @@
+
+h1 {
+  font-size: 20px;
+}
+
+.small-img {
+  height: 200px;
+  width: 100% !important;
+}
+
+div > .btn {
+  margin-right: 1rem !important;
+}
