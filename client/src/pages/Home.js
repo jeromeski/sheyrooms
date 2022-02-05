@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal } from "react-bootstrap";
-import Room from '../components/Room';
+import Room from "../components/Room";
 import { useAxios } from "../hooks/useAxios";
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import Carousel from "../components/Carousel";
 
 const url = process.env.REACT_APP_BACKEND_URL;
 
 function Home() {
 	const { data, isLoading, error } = useAxios(`${url}/rooms`);
-	const [show, setShow] = useState(false);
 	const [rooms, setRooms] = useState([]);
-
-	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
+	const [isOpen, setIsOpen] = useState(false);
+	const [room, setRoom] = useState([]);
 
 	useEffect(() => {
 		let current = true;
@@ -21,63 +20,49 @@ function Home() {
 		return () => (current = false);
 	}, [data]);
 
+	const handleShow = (room) => {
+		setIsOpen(true);
+		setRoom(room);
+	};
+
+	const handleClose = () => {
+		setIsOpen(false);
+	};
+
 	return (
-		<div className="container">
-			<div className="row justify-content-center mt-5">
-				{isLoading ? (
-					<h1>Loading...</h1>
-				) : error ? (
-					<h1>Error Fetching Rooms...</h1>
-				) : (
-					<>
-						{rooms.map((room) => (
-							<div key={room._id} className="col-md-9">
-								<Room {...room} />
-							</div>
-						))}
-					</>
-				)}
+		<>
+			<div className="container">
+				<div className="row justify-content-center mt-5">
+					{isLoading ? (
+						<h1>Loading...</h1>
+					) : error ? (
+						<h1>Error Fetching Rooms...</h1>
+					) : (
+						<>
+							{rooms.map((room) => (
+								<div key={room._id} className="col-md-9">
+									<Room {...room} handleShow={handleShow} />
+								</div>
+							))}
+						</>
+					)}
+				</div>
 			</div>
-		</div>
+			<Modal centered="true" size="lg" isOpen={isOpen}>
+				<ModalHeader toggle={handleClose}>{room.name}</ModalHeader>
+				<ModalBody>
+					<Carousel room={room} />
+					<p>{room.description}</p>
+				</ModalBody>
+				<ModalFooter>
+					<Button color="primary" onClick={function noRefCheck() {}}>
+						Do Something
+					</Button>{" "}
+					<Button onClick={handleClose}>Cancel</Button>
+				</ModalFooter>
+			</Modal>
+		</>
 	);
 }
 
 export default Home;
-
-/*
-	<Button variant="primary" onClick={handleShow}>
-						Launch demo modal
-					</Button>
-
-					<Modal show={show} onHide={handleClose}>
-						<Modal.Header closeButton>
-							<Modal.Title>Modal heading</Modal.Title>
-						</Modal.Header>
-						<Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-						<Modal.Footer>
-							<Button variant="secondary" onClick={handleClose}>
-								Close
-							</Button>
-							<Button variant="primary" onClick={handleClose}>
-								Save Changes
-							</Button>
-						</Modal.Footer>
-					</Modal>	<Button variant="primary" onClick={handleShow}>
-						Launch demo modal
-					</Button>
-
-					<Modal show={show} onHide={handleClose}>
-						<Modal.Header closeButton>
-							<Modal.Title>Modal heading</Modal.Title>
-						</Modal.Header>
-						<Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-						<Modal.Footer>
-							<Button variant="secondary" onClick={handleClose}>
-								Close
-							</Button>
-							<Button variant="primary" onClick={handleClose}>
-								Save Changes
-							</Button>
-						</Modal.Footer>
-					</Modal>
-*/ 
