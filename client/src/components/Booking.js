@@ -30,20 +30,26 @@ export default function Booking() {
 							</div>
 							<div className="col-md-5">
 								<div style={{ textAlign: "right" }}>
-									<h1>Booking Details</h1>
-									<hr />
-									<br />
-									<p>Name:</p>
-									<p>From Date:</p>
-									<p>To Date:</p>
-									<p>Maxcount:</p>
-									<h1>Amount</h1>
-									<br />
-									<hr />
-									<p>Total Days:</p>
-									<p>Rent Per Day:</p>
-									<h1>Total Amount:</h1>
-									<Button className="btn btn-dark">Pay now</Button>
+									<div>
+										<h1>Booking Details</h1>
+										<hr />
+										<br />
+									</div>
+									<div>
+										<p>Name:</p>
+										<p>From Date:</p>
+										<p>To Date:</p>
+										<p>Maxcount:</p>
+										<h1>Amount</h1>
+										<br />
+										<hr />
+									</div>
+									<div>
+										<p>Total Days:</p>
+										<p>Rent Per Day:</p>
+										<h1>Total Amount:</h1>
+										<Button className="btn btn-dark">Pay now</Button>
+									</div>
 								</div>
 							</div>
 						</div>

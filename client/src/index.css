@@ -39,3 +39,16 @@ div > .btn {
 body.modal-open {
   padding-right: 0 !important;
 }
+
+.login-form-wrapper,
+.signup-form-wrapper {
+  height: 100%;
+  display: flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.login-form-block, .signup-form-block {
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  padding: 20px;
+}
