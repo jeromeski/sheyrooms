@@ -1,6 +1,15 @@
 export default function Room(props) {
-	const { name, phonenumber, description, maxcount, rentperday, type, imageurls, handleShow } =
-		props;
+	const {
+		name,
+		phonenumber,
+		description,
+		maxcount,
+		rentperday,
+		type,
+		imageurls,
+		handleShow,
+		handleRoom
+	} = props;
 	const room = props;
 	return (
 		<div className="row bg-light mb-5 bg-shadow">
@@ -15,7 +24,9 @@ export default function Room(props) {
 				<p>Contact Number:{phonenumber}</p>
 				<p>{type}</p>
 				<div style={{ float: "right" }}>
-					<button className="btn btn-dark">Book Now</button>
+					<button className="btn btn-dark" onClick={() => handleRoom(room._id)}>
+						Book Now
+					</button>
 					<button className="btn btn-dark" onClick={() => handleShow(room)}>
 						View Details
 					</button>
