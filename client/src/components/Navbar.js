@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 export default function Navbar() {
+	const navigate = useNavigate();
+
 	return (
 		<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
 			<div className="container-fluid">
@@ -18,14 +22,17 @@ export default function Navbar() {
 				<div className="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul className="navbar-nav ms-auto mb-2 mb-lg-0">
 						<li className="nav-item">
-							<a className="nav-link active" aria-current="page" href="#">
+							<button
+								className="btn btn-link nav-link"
+								aria-current="page"
+								onClick={() => navigate("/register")}>
 								Register
-							</a>
+							</button>
 						</li>
 						<li className="nav-item">
-							<a className="nav-link" href="#">
+							<button className="btn btn-link nav-link" onClick={() => navigate("/login")}>
 								Login
-							</a>
+							</button>
 						</li>
 					</ul>
 				</div>

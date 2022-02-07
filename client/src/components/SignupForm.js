@@ -1,31 +1,11 @@
 import { useState } from "react";
 import { Button } from "reactstrap";
-import { signUp } from "../utils";
 
-export default function SignupForm() {
-	const [error, setError] = useState(null);
-	const [loading, setLoading] = useState(false);
+export default function SignupForm({ handleSignup }) {
 	const [showPassword, setShowPassword] = useState(false);
 
-	const handleSignup = async (event) => {
-		event.preventDefault();
-		setLoading(true);
-		const [name, email, password, cPassword] = event.target.elements;
-		try {
-			await signUp({
-				name: name.value,
-				email: email.value,
-				password: password.value,
-				cPassword: cPassword.value
-			});
-		} catch (error) {
-			setLoading(false);
-			setError(error);
-		}
-	};
-
 	return (
-		<form>
+		<form onSubmit={handleSignup}>
 			<div className="form-group">
 				<label htmlFor="name">Name</label>
 				<input

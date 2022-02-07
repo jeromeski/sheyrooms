@@ -31,10 +31,11 @@ export const initialState = {
 	loading: false,
 	isAuthenticated: false,
 	user: null,
-	error: null
+	error: null,
+	admin: false
 };
 
-export default function userStateReducer(state, action) {
+export default function userReducer(state, action) {
 	switch (action.type) {
 		case LOGIN_REQUEST:
 		case REGISTER_USER_REQUEST:
