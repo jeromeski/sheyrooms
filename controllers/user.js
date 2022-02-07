@@ -15,6 +15,7 @@ exports.createUser = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+  console.log(req.body);
 	try {
 		const user = await User.findOne({ email: req.body.email, password: req.body.password });
 		if (user) {

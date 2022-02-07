@@ -1,7 +1,35 @@
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/user-state";
 
 export default function Navbar() {
 	const navigate = useNavigate();
+	const { isAuthenticated, user } = useUser();
+
+	const authItems = (
+		<ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+			<li className="nav-item">
+				<button
+					className="btn btn-link nav-link"
+					aria-current="page"
+					onClick={() => navigate("/register")}>
+					Register
+				</button>
+			</li>
+			<li className="nav-item">
+				<button className="btn btn-link nav-link" onClick={() => navigate("/login")}>
+					Login
+				</button>
+			</li>
+		</ul>
+	);
+
+	const userItem = (
+		<ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+			<li className="nav-item">
+				<button className="btn btn-link nav-link">{user.name}</button>
+			</li>
+		</ul>
+	);
 
 	return (
 		<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -20,21 +48,7 @@ export default function Navbar() {
 					<span className="navbar-toggler-icon" />
 				</button>
 				<div className="collapse navbar-collapse" id="navbarSupportedContent">
-					<ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-						<li className="nav-item">
-							<button
-								className="btn btn-link nav-link"
-								aria-current="page"
-								onClick={() => navigate("/register")}>
-								Register
-							</button>
-						</li>
-						<li className="nav-item">
-							<button className="btn btn-link nav-link" onClick={() => navigate("/login")}>
-								Login
-							</button>
-						</li>
-					</ul>
+					{!isAuthenticated ? authItems : userItem}
 				</div>
 			</div>
 		</nav>

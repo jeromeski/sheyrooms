@@ -8,8 +8,7 @@ export default function Signup() {
 	const [userInfo, setUserInfo] = useState(null);
 	const navigate = useNavigate();
 
-	const { registerUserRequest, registerUserSuccess, registerUserFail, clearErrors, user } =
-		useUser();
+	const { registerUserRequest, registerUserSuccess, registerUserFail, user } = useUser();
 
 	console.log(user);
 
@@ -17,13 +16,12 @@ export default function Signup() {
 		event.preventDefault();
 		const [name, email, password, cPassword] = event.target.elements;
 		try {
-			const user = {
+			setUserInfo({
 				name: name.value,
 				email: email.value,
 				password: password.value,
 				cPassword: cPassword.value
-			};
-			setUserInfo(user);
+			});
 		} catch (error) {
 			console.log(error);
 		}

@@ -1,29 +1,17 @@
 import React, { useRef, useState } from "react";
 import { Button } from "reactstrap";
-import { login } from "../utils";
 
-function LoginForm() {
-	const [error, setError] = useState(null);
-	const [loading, setLoading] = useState(false);
+function LoginForm({ handleLogin, error }) {
 	const [showPassword, setShowPassword] = useState(false);
 
 	const emailRef = useRef();
 	const passwordRef = useRef();
 
-	const handleLogin = async (event) => {
-		event.preventDefault();
-		setLoading(true);
-		try {
-			await login(emailRef.current.value, passwordRef.current.value);
-		} catch (error) {
-			setLoading(false);
-			setError(error);
-		}
-	};
-
 	const handleShowPassword = (event) => {
+		console.log("chexbox checked?", event.target.checked);
 		setShowPassword(event.target.checked);
 	};
+
 	return (
 		<div className="login-form-block">
 			{error && (
@@ -34,7 +22,10 @@ function LoginForm() {
 					</p>
 				</div>
 			)}
-			<form>
+			<form
+				onSubmit={(e) =>
+					handleLogin(e, { email: emailRef.current.value, password: passwordRef.current.value })
+				}>
 				<div className="form-group mt-2">
 					<label htmlFor="email">Email address</label>
 					<input
@@ -43,11 +34,31 @@ function LoginForm() {
 						id="email"
 						aria-describedby="emailHelp"
 						placeholder="Enter email"
+						ref={emailRef}
+						required
 					/>
 				</div>
 				<div className="form-group mt-2">
 					<label htmlFor="password">Password</label>
-					<input type="password" className="form-control" id="password" placeholder="Password" />
+					<input
+						type={showPassword ? "text" : "password"}
+						className="form-control"
+						id="password"
+						placeholder="Password"
+						ref={passwordRef}
+						required
+					/>
+				</div>
+				<div>
+					<label>
+						<input
+							className="form-group"
+							type="checkbox"
+							onChange={handleShowPassword}
+							defaultChecked={showPassword}
+						/>{" "}
+						show password
+					</label>
 				</div>
 				<Button type="submit" className="btn btn-dark mt-4">
 					Submit
