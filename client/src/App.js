@@ -34,7 +34,7 @@ function App() {
 					<Navbar />
 					<Routes>
 						<Route path="/" element={<Home />} />
-						<Route path="/booking/:id" element={<Booking />} exact />
+						<Route path="/booking/:id/:fromDate/:toDate" element={<Booking />} exact />
 						<Route path="/register" element={<Signup />} exact />
 						<Route path="/login" element={<Login />} exact />
 					</Routes>

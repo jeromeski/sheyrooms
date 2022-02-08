@@ -26,8 +26,8 @@ export const useAxios = (url) => {
 		return () => (current = false);
 	}, [url]);
 	return {
-		isLoading,
 		data,
+		isLoading,
 		error
 	};
 };

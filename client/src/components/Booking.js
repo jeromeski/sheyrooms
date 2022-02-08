@@ -2,17 +2,17 @@ import { useAxios } from "../hooks/useAxios";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Button } from "reactstrap";
+import moment from "moment";
 
 export default function Booking() {
 	const { id } = useParams();
 	const { data, isLoading, error } = useAxios(`${process.env.REACT_APP_BACKEND_URL}/room/${id}`);
-	const [room, setRoom] = useState();
 
-	useEffect(() => {
-		if (data) {
-			setRoom(data);
-		}
-	}, [data]);
+	const { fromDate, toDate } = useParams();
+
+	const _fromDate = moment(fromDate, "DD-MM-YYYY");
+	const _toDate = moment(toDate, "DD-MM-YYYY");
+	const totalDays = moment.duration(_toDate.diff(_fromDate)).asDays() + 1;
 
 	return (
 		<>
@@ -21,14 +21,14 @@ export default function Booking() {
 			) : error ? (
 				<h1>Error...</h1>
 			) : (
-				room && (
+				data && (
 					<div className="container">
 						<div className="row justify-content-center mt-5">
-							<div className="col-md-5">
-								<h1>{room.name}</h1>
-								<img src={room.imageurls[0]} alt="" />
+							<div className="col-md-6">
+								<h1>{data.name}</h1>
+								<img src={data.imageurls[0]} alt="" />
 							</div>
-							<div className="col-md-5">
+							<div className="col-md-4">
 								<div style={{ textAlign: "right" }}>
 									<div>
 										<h1>Booking Details</h1>
@@ -37,17 +37,28 @@ export default function Booking() {
 									</div>
 									<div>
 										<p>Name:</p>
-										<p>From Date:</p>
-										<p>To Date:</p>
-										<p>Maxcount:</p>
-										<h1>Amount</h1>
+										<p>
+											From Date: <b>{fromDate}</b>
+										</p>
+										<p>
+											To Date: <b>{toDate}</b>{" "}
+										</p>
+										<p>
+											Maxcount: <b>{data.maxcount}</b>
+										</p>
 										<br />
 										<hr />
 									</div>
 									<div>
-										<p>Total Days:</p>
-										<p>Rent Per Day:</p>
-										<h1>Total Amount:</h1>
+										<p>
+											Total Days: <b>{totalDays}</b>{" "}
+										</p>
+										<p>
+											Rent Per Day: <b>{data.rentperday}</b>
+										</p>
+										<h1>
+											Total Amount: <b>{totalDays * data.rentperday}</b>
+										</h1>
 										<Button className="btn btn-dark">Pay now</Button>
 									</div>
 								</div>
