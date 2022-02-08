@@ -1,9 +1,37 @@
-import { useNavigate } from "react-router-dom";
+import localforage from "localforage";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "reactstrap";
 import { useUser } from "../context/user-state";
 
 export default function Navbar() {
 	const navigate = useNavigate();
-	const { isAuthenticated, user } = useUser();
+	const { isAuthenticated, user, logoutSuccess } = useUser();
+	const [show, setShow] = useState(false);
+	const [isLogout, setIsLogout] = useState(false);
+
+	const handleLogout = () => {
+		setIsLogout(true);
+	};
+
+	const handleShow = (e) => {
+		console.log("clicked");
+		setShow((prev) => !prev);
+	};
+
+	useEffect(() => {
+		const noop = () => {};
+		if (isLogout) {
+			return (async () => {
+				await localforage.removeItem("auth").then((data) => {
+					logoutSuccess();
+					setIsLogout(false);
+					setShow(false);
+					noop(data);
+				});
+			})();
+		}
+	}, [isLogout]);
 
 	const authItems = (
 		<ul className="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -25,18 +53,37 @@ export default function Navbar() {
 
 	const userItem = (
 		<ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-			<li className="nav-item">
-				<button className="btn btn-link nav-link">{user.name}</button>
-			</li>
+			<div className={show ? "dropdown show" : "dropdown"}>
+				<button
+					className="btn btn-secondary dropdown-toggle"
+					type="button"
+					id="dropdownMenuButton"
+					data-toggle="dropdown"
+					aria-haspopup="true"
+					aria-expanded={show ? "true" : "false"}
+					onClick={handleShow}>
+					{user ? user.name : "Admin"}
+				</button>
+				<div
+					className={show ? "dropdown-menu show" : "dropdown-menu"}
+					aria-labelledby="dropdownMenuButton">
+					<Link className="dropdown-item" to="/dashboard">
+						Dashboard
+					</Link>
+					<Button className="btn btn-link dropdown-item" onClick={handleLogout}>
+						Logout
+					</Button>
+				</div>
+			</div>
 		</ul>
 	);
 
 	return (
 		<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
 			<div className="container-fluid">
-				<a className="navbar-brand" href="#">
+				<Link className="navbar-brand" to="/">
 					Navbar
-				</a>
+				</Link>
 				<button
 					className="navbar-toggler"
 					type="button"

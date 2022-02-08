@@ -5,9 +5,28 @@ import Home from "./pages/Home";
 import Booking from "./components/Booking";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
-import UserProvider from "./context/user-state";
+import UserProvider, { useUser } from "./context/user-state";
+import { useEffect } from "react";
+import localforage from "localforage";
 
 function App() {
+	const { loginSuccess, logoutSuccess, isAuthenticated } = useUser();
+
+	useEffect(() => {
+		(async () => {
+			try {
+				const auth = await localforage.getItem("auth");
+				if (auth) {
+					console.log(auth);
+					loginSuccess(auth);
+				} else {
+					logoutSuccess();
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		})();
+	}, [isAuthenticated]);
 	return (
 		<>
 			<div>

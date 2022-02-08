@@ -45,12 +45,14 @@ export default function Signup() {
 			}
 		}
 		return () => (current = false);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [userInfo]);
 
 	useEffect(() => {
 		if (user) {
 			navigate("/login");
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [user]);
 	return (
 		<div className="container">

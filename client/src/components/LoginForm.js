@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Button } from "reactstrap";
 
-function LoginForm({ handleLogin, error }) {
+function LoginForm({ handleLogin, error, loading }) {
 	const [showPassword, setShowPassword] = useState(false);
 
 	const emailRef = useRef();
