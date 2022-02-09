@@ -2,7 +2,7 @@
 import Navbar from "./components/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Booking from "./components/Booking";
+import Booking from "./pages/Booking";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import UserProvider, { useUser } from "./context/user-state";

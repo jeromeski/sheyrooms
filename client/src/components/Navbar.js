@@ -28,6 +28,7 @@ export default function Navbar() {
 					setIsLogout(false);
 					setShow(false);
 					noop(data);
+          navigate("/");
 				});
 			})();
 		}

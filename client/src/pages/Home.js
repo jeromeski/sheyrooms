@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
+import RoomsBlock from "../components/containers/rooms-block";
 import moment from "moment";
 import { DatePicker } from "antd";
 import { useNavigate } from "react-router-dom";
-import Room from "../components/Room";
 import { useAxios } from "../hooks/useAxios";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import Carousel from "../components/Carousel";
 
 import "antd/dist/antd.css";
+import { useUser } from "../context/user-state";
 
 const { RangePicker } = DatePicker;
 
@@ -15,24 +16,25 @@ const url = process.env.REACT_APP_BACKEND_URL;
 
 function Home() {
 	const { data, isLoading, error } = useAxios(`${url}/rooms`);
+	const { isAuthenticated } = useUser();
 	const [isOpen, setIsOpen] = useState(false);
-	const [room, setRoom] = useState([]);
-	const [fromDate, setFromDate] = useState();
-	const [toDate, setToDate] = useState();
+	const [room, setRoom] = useState(null);
+	const [fromDate, setFromDate] = useState(null);
+	const [toDate, setToDate] = useState(null);
+	const [isDisabled, setIsDisabled] = useState(true);
 
 	const navigate = useNavigate();
 
-	const handleShow = (room) => {
+	const handleShowModalDetails = (roomData) => {
 		setIsOpen(true);
-		setRoom(room);
+		setRoom(roomData);
 	};
 
 	const handleClose = () => {
 		setIsOpen(false);
 	};
 
-	const handleRoom = (id) => {
-		console.log(id);
+	const goToSelectedRoom = (id) => {
 		navigate(`/booking/${id}/${fromDate}/${toDate}`);
 	};
 
@@ -41,7 +43,11 @@ function Home() {
 		setToDate(moment(dates[1]).format("DD-MM-YYYY"));
 	};
 
-	console.log(data);
+	useEffect(() => {
+		if (toDate && fromDate && isAuthenticated) {
+			setIsDisabled(false);
+		}
+	}, [toDate, fromDate]);
 
 	return (
 		<>
@@ -52,36 +58,40 @@ function Home() {
 					</div>
 				</div>
 				<div className="row justify-content-center mt-5">
-					{isLoading ? (
+					{isLoading && !data ? (
 						<h1>Loading...</h1>
 					) : error ? (
 						<h1>Error Fetching Rooms...</h1>
 					) : (
 						data && (
-							<>
-								{data.rooms.map((room) => (
-									<div key={room._id} className="col-md-9">
-										<Room {...room} handleShow={handleShow} handleRoom={handleRoom} />
-									</div>
-								))}
-							</>
+							<RoomsBlock
+								data={data}
+								handleShowModalDetails={handleShowModalDetails}
+								goToSelectedRoom={goToSelectedRoom}
+								isDisabled={isDisabled}
+							/>
 						)
 					)}
 				</div>
 			</div>
-			<Modal centered size="lg" isOpen={isOpen}>
-				<ModalHeader toggle={handleClose}>{room.name}</ModalHeader>
-				<ModalBody>
-					<Carousel room={room} />
-					<p>{room.description}</p>
-				</ModalBody>
-				<ModalFooter>
-					<Button color="primary" onClick={() => handleRoom(room._id)}>
-						Book Now
-					</Button>{" "}
-					<Button onClick={handleClose}>Cancel</Button>
-				</ModalFooter>
-			</Modal>
+			{room && (
+				<Modal centered size="lg" isOpen={isOpen}>
+					<ModalHeader toggle={handleClose}>{room.name}</ModalHeader>
+					<ModalBody>
+						<Carousel room={room} />
+						<p>{room.description}</p>
+					</ModalBody>
+					<ModalFooter>
+						<Button
+							color="primary"
+							onClick={() => goToSelectedRoom(room._id)}
+							disabled={isDisabled}>
+							Book Now
+						</Button>{" "}
+						<Button onClick={handleClose}>Cancel</Button>
+					</ModalFooter>
+				</Modal>
+			)}
 		</>
 	);
 }

@@ -1,14 +1,13 @@
-export default function Room(props) {
+export default function RoomCard(props) {
 	const {
 		name,
 		phonenumber,
-		description,
 		maxcount,
-		rentperday,
 		type,
 		imageurls,
-		handleShow,
-		handleRoom
+		handleShowModalDetails,
+		goToSelectedRoom,
+		isDisabled
 	} = props;
 	const room = props;
 	return (
@@ -24,10 +23,13 @@ export default function Room(props) {
 				<p>Contact Number:{phonenumber}</p>
 				<p>{type}</p>
 				<div style={{ float: "right" }}>
-					<button className="btn btn-dark" onClick={() => handleRoom(room._id)}>
+					<button
+						disabled={isDisabled}
+						className="btn btn-dark"
+						onClick={() => goToSelectedRoom(room._id)}>
 						Book Now
 					</button>
-					<button className="btn btn-dark" onClick={() => handleShow(room)}>
+					<button className="btn btn-dark" onClick={() => handleShowModalDetails(room)}>
 						View Details
 					</button>
 				</div>

@@ -7,7 +7,7 @@ exports.createUser = async (req, res) => {
 			email: req.body.email,
 			password: req.body.password
 		});
-		newUser.save();
+		await newUser.save();
 		res.json(newUser);
 	} catch (error) {
 		res.status(400).json({ message: error.message });
@@ -15,7 +15,6 @@ exports.createUser = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  console.log(req.body);
 	try {
 		const user = await User.findOne({ email: req.body.email, password: req.body.password });
 		if (user) {

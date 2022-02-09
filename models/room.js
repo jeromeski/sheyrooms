@@ -30,9 +30,10 @@ const roomSchema = mongoose.Schema(
 		currentBookings: []
 	},
 	{
-		timestamp: true
+		timestamps: true
 	}
 );
 
 const Room = mongoose.model("Room", roomSchema);
+
 module.exports = Room;
