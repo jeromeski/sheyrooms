@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import localforage from "localforage";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -15,23 +16,20 @@ export default function Navbar() {
 	};
 
 	const handleShow = (e) => {
-		console.log("clicked");
 		setShow((prev) => !prev);
 	};
 
 	useEffect(() => {
-		const noop = () => {};
-		if (isLogout) {
-			return (async () => {
-				await localforage.removeItem("auth").then((data) => {
+		return (async () => {
+			if (isLogout) {
+				await localforage.removeItem("auth").then(() => {
+					navigate("/");
 					logoutSuccess();
 					setIsLogout(false);
 					setShow(false);
-					noop(data);
-          navigate("/");
 				});
-			})();
-		}
+			}
+		})();
 	}, [isLogout]);
 
 	const authItems = (

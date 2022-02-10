@@ -18,11 +18,12 @@
 	},
 	"homepage": "https://github.com/jeromeski/sheyrooms#readme",
 	"dependencies": {
+		"@stripe/react-stripe-js": "^1.7.0",
+		"@stripe/stripe-js": "^1.22.0",
 		"body-parser": "^1.19.1",
 		"cors": "^2.8.5",
 		"dotenv": "^16.0.0",
 		"express": "^4.17.2",
-		"localforage": "^1.10.0",
 		"moment": "^2.29.1",
 		"mongoose": "^6.2.0"
 	},

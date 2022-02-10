@@ -1,6 +1,8 @@
-import { useAxios } from "../hooks/useAxios";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { loadStripe } from "@stripe/stripe-js";
+import { useAxios } from "../hooks/useAxios";
+
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import moment from "moment";
 import axios from "axios";
@@ -28,6 +30,12 @@ export default function Booking() {
 		}
 		setIsPaid(true);
 	};
+
+	useEffect(() => {
+		if (!isAuthenticated) {
+			navigate("/");
+		}
+	}, [isAuthenticated]);
 
 	useEffect(() => {
 		let current = true;
@@ -105,7 +113,7 @@ export default function Booking() {
 											Total Amount: <b>{totalDays * data.rentperday}</b>
 										</h1>
 										<Button onClick={handlePayment} className="btn btn-dark">
-											Pay now
+											Continue
 										</Button>
 									</div>
 								</div>
